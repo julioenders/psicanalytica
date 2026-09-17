@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Psicanalytica — Enciclopedia Psicanalitica Freud & Lacan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+
+:root {
+  --bg: #12090f;
+  --surface: #1e1219;
+  --surface2: #2a1c25;
+  --surface3: #362631;
+  --border: #4a3545;
+  --text: #e8ddd5;
+  --text-muted: #9e8a95;
+  --accent: #c9a84c;
+  --accent-hover: #d4b85e;
+  --accent-dim: rgba(201,168,76,0.15);
+  --wine: #8b4572;
+  --wine-dim: rgba(139,69,114,0.2);
+  --cream: #f5e6d3;
+  --sage: #7ea87e;
+  --rose: #c47a8a;
+  --radius: 10px;
+  --shadow: 0 4px 20px rgba(0,0,0,0.4);
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Crimson Text', Georgia, serif;
+  --font-ui: 'Inter', 'Segoe UI', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+.header {
+  background: linear-gradient(135deg, #1e1219 0%, #2a1c25 50%, #1e1219 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 32px 24px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.logo {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 2px;
+  position: relative;
+}
+.logo-psi {
+  font-size: 42px;
+  font-style: italic;
+  opacity: 0.9;
+}
+.logo-sub {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+.logo-authors {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--wine);
+  margin-top: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.search-section {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 24px 16px;
+}
+.search-wrap {
+  position: relative;
+}
+.search-input {
+  width: 100%;
+  padding: 16px 20px 16px 48px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 18px;
+  outline: none;
+  transition: all 0.3s;
+}
+.search-input::placeholder { color: var(--text-muted); font-style: italic; }
+.search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: var(--text-muted);
+}
+.search-hint {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 10px;
+  text-align: center;
+}
+
+.topics-grid {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 8px 24px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.topic-chip {
+  font-family: var(--font-ui);
+  padding: 6px 14px;
+  font-size: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.topic-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+.api-bar {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px 24px;
+}
+.api-toggle {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+}
+.api-toggle:hover { color: var(--accent); }
+.api-config {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-top: 8px;
+}
+.api-config.open { display: block; }
+.api-config label {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 6px;
+}
+.api-config input {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  outline: none;
+}
+.api-config input:focus { border-color: var(--accent); }
+.api-config .hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+.api-config .hint a { color: var(--accent); text-decoration: none; }
+
+.result-area {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 40px;
+  display: none;
+}
+.result-area.active { display: block; }
+
+.result-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.result-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--cream);
+}
+.result-badge {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+.badge-pregen { background: var(--accent-dim); color: var(--accent); }
+.badge-ai { background: var(--wine-dim); color: var(--rose); }
+
+.result-summary {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--text);
+  margin-bottom: 28px;
+  text-align: justify;
+}
+.result-summary p { margin-bottom: 14px; }
+
+.ref-section {
+  margin-bottom: 24px;
+}
+.ref-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.ref-title-freud { color: var(--accent); border-color: var(--accent); }
+.ref-title-lacan { color: var(--wine); border-color: var(--wine); }
+
+.ref-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.ref-item .ref-work {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--cream);
+  font-style: italic;
+}
+.ref-item .ref-year {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
+.ref-item .ref-detail {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.export-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.btn-export {
+  font-family: var(--font-ui);
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-export:hover { transform: translateY(-1px); }
+.btn-artigo { background: var(--accent-dim); color: var(--accent); border-color: rgba(201,168,76,0.3); }
+.btn-artigo:hover { background: rgba(201,168,76,0.25); }
+.btn-aula { background: var(--wine-dim); color: var(--rose); border-color: rgba(139,69,114,0.3); }
+.btn-aula:hover { background: rgba(139,69,114,0.3); }
+.btn-slides { background: rgba(126,168,126,0.15); color: var(--sage); border-color: rgba(126,168,126,0.3); }
+.btn-slides:hover { background: rgba(126,168,126,0.25); }
+
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  display: none;
+}
+.loading.active { display: block; }
+.loading-icon {
+  font-size: 48px;
+  animation: pulse 2s ease-in-out infinite;
+  margin-bottom: 16px;
+}
+@keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+.loading-text {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(18,9,15,0.9);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.modal-backdrop.active { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 800px;
+  width: 95%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.modal-content {
+  font-family: var(--font-body);
+  font-size: 14px;
+  white-space: pre-wrap;
+  line-height: 1.7;
+  background: var(--surface2);
+  padding: 20px;
+  border-radius: 8px;
+  max-height: 55vh;
+  overflow-y: auto;
+  color: var(--text);
+}
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  justify-content: flex-end;
+}
+.btn {
+  font-family: var(--font-ui);
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary { background: var(--accent); color: #1a1118; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--accent);
+  color: #1a1118;
+  padding: 10px 24px;
+  border-radius: var(--radius);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.3s;
+  z-index: 300;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+.footer {
+  text-align: center;
+  padding: 32px 24px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  line-height: 1.8;
+}
+.footer .divider {
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: var(--border);
+  margin: 12px auto;
+}
+
+@media (max-width: 600px) {
+  .logo { font-size: 28px; }
+  .search-input { font-size: 16px; }
+  .result-title { font-size: 22px; }
+  .export-bar { flex-direction: column; }
+}
+
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo"><span class="logo-psi">&Psi;</span> Psicanalytica</div>
+    <div class="logo-sub">Enciclopedia Psicanalitica &mdash; Obras Completas</div>
+    <div class="logo-authors">Sigmund Freud &bull; Jacques Lacan</div>
+  </header>
+
+  <div class="search-section">
+    <div class="search-wrap">
+      <span class="search-icon">&Psi;</span>
+      <input type="text" class="search-input" id="searchInput"
+        placeholder="Pesquisar conceito psicanalitico..."
+        onkeydown="if(event.key==='Enter') search()">
+    </div>
+    <div class="search-hint">Pressione Enter para pesquisar &mdash; ex: Inconsciente, Complexo de Edipo, Estadio do Espelho, Pulsao de morte</div>
+  </div>
+
+  <div class="topics-grid" id="topicsGrid"></div>
+
+  <div class="api-bar">
+    <div class="api-toggle" onclick="toggleApiConfig()">&#9881; Configurar Gemini API (para temas personalizados)</div>
+    <div class="api-config" id="apiConfig">
+      <label>Chave da API Google Gemini (gratuita)</label>
+      <input type="password" id="apiKey" placeholder="Cole sua chave aqui..."
+        onchange="localStorage.setItem('gemini_key', this.value)">
+      <div class="hint">
+        Obtenha sua chave gratuita em <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a>.<br>
+        Sem chave, apenas os temas pre-cadastrados estao disponiveis.
+        A chave fica salva apenas no seu navegador.
+      </div>
+    </div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="loading-icon">&Psi;</div>
+    <div class="loading-text">Consultando o inconsciente...</div>
+  </div>
+
+  <div class="result-area" id="resultArea">
+    <div class="result-header">
+      <h1 class="result-title" id="resultTitle"></h1>
+      <span class="result-badge" id="resultBadge"></span>
+    </div>
+    <div class="result-summary" id="resultSummary"></div>
+    <div class="ref-section">
+      <div class="ref-title ref-title-freud">Sigmund Freud &mdash; Referencias</div>
+      <div id="refFreud"></div>
+    </div>
+    <div class="ref-section">
+      <div class="ref-title ref-title-lacan">Jacques Lacan &mdash; Referencias</div>
+      <div id="refLacan"></div>
+    </div>
+    <div class="export-bar">
+      <button class="btn-export btn-artigo" onclick="exportArtigo()">&#128220; Artigo ABNT (10p)</button>
+      <button class="btn-export btn-aula" onclick="exportAula()">&#127979; Roteiro de Aula (2h)</button>
+      <button class="btn-export btn-slides" onclick="exportSlides()">&#128202; Esquema para Slides</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="exportModal">
+    <div class="modal">
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-content" id="modalContent"></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">Fechar</button>
+        <button class="btn btn-primary" onclick="copyModal()">Copiar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <footer class="footer">
+    <span class="divider"></span>
+    Psicanalytica &mdash; Enciclopedia Psicanalitica baseada nas obras de Sigmund Freud e Jacques Lacan<br>
+    Conteudo pre-gerado revisado academicamente &bull; Conteudo via IA identificado como tal<br>
+    As referencias apontam para as edicoes padrao: Edicao Standard Brasileira (ESB/Imago) para Freud e Jorge Zahar Editor para Lacan<br>
+    <span class="divider"></span>
+    Conteudo de referencia academica &mdash; nao substitui a leitura das obras originais
+  </footer>
+
+<script>
+
+const TOPICS = {
+  "inconsciente": {
+    title: "O Inconsciente (Das Unbewusste)",
+    summary: `<p>O inconsciente constitui o conceito fundador da psicanalise, representando o conjunto de conteudos psiquicos — representacoes, afetos, desejos — que nao tem acesso direto a consciencia, mas que exercem influencia decisiva sobre o comportamento, os sintomas e a vida psiquica do sujeito. Freud postulou a existencia do inconsciente a partir da observacao clinica da histeria e dos fenomenos hipnoticos, consolidando-o como pedra angular de toda a sua teoria.</p>
+<p>Na primeira topica freudiana (1900-1915), o aparelho psiquico divide-se em Inconsciente (Ics.), Pre-consciente (Pcs.) e Consciente (Cs.). O inconsciente opera pelo processo primario — condensacao e deslocamento —, obedece ao principio do prazer e desconhece a negacao, o tempo e a contradicao. Na segunda topica (1920-1923), o inconsciente se redistribui pelas tres instancias: Id, Ego e Superego, sendo que partes do Ego e do Superego tambem sao inconscientes.</p>
+<p>Jacques Lacan reformula o inconsciente sob a perspectiva estruturalista, afirmando que "o inconsciente e estruturado como uma linguagem" (Seminario 11). Para Lacan, o inconsciente nao e um reservatorio de conteudos reprimidos, mas um efeito da cadeia significante — ele se manifesta nos lapsos, chistes, sonhos e formacoes do inconsciente, nos pontos onde o discurso tropeqa e revela o desejo. O inconsciente lacaniano e da ordem do simbolico, articulado pelas leis da metafora (condensacao) e da metonimia (deslocamento), retomando Jakobson pela via de Freud.</p>`,
+    freud: [
+      { work: "A Interpretacao dos Sonhos (Die Traumdeutung)", year: 1900, volume: "IV-V", detail: "Capitulo VII apresenta a primeira topica e o funcionamento do inconsciente pelo processo primario." },
+      { work: "O Inconsciente (Das Unbewusste)", year: 1915, volume: "XIV", detail: "Artigo metapsicologico central: define as propriedades do sistema inconsciente — atemporalidade, ausencia de negacao, processo primario." },
+      { work: "O Ego e o Id (Das Ich und das Es)", year: 1923, volume: "XIX", detail: "Introduz a segunda topica (Id, Ego, Superego) e demonstra que o inconsciente nao coincide com o reprimido." },
+      { work: "Nota sobre o Conceito de Inconsciente em Psicanalise", year: 1912, volume: "XII", detail: "Distingue os sentidos descritivo, dinamico e sistematico do inconsciente." }
+    ],
+    lacan: [
+      { work: "Seminario 11: Os Quatro Conceitos Fundamentais da Psicanalise", year: "1964", detail: "Formula que o inconsciente e estruturado como uma linguagem; introduz os conceitos de alienacao e separacao." },
+      { work: "A Instancia da Letra no Inconsciente ou a Razao desde Freud (Escritos)", year: "1957", detail: "Articula inconsciente e linguagem via metafora e metonimia, relendo Freud por Saussure e Jakobson." },
+      { work: "Seminario 5: As Formacoes do Inconsciente", year: "1957-1958", detail: "Analise detalhada do chiste, do lapso e do sonho como formacoes do inconsciente regidas pelas leis do significante." }
+    ]
+  },
+
+  "complexo-de-edipo": {
+    title: "Complexo de Edipo (Oedipuskomplex)",
+    summary: `<p>O complexo de Edipo designa o conjunto organizado de desejos amorosos e hostis que a crianca experimenta em relacao aos pais. Na sua forma positiva, configura-se como desejo de morte do rival (genitor do mesmo sexo) e desejo sexual pelo genitor do sexo oposto. Na forma negativa, inverte-se: amor pelo genitor do mesmo sexo e rivalidade com o do sexo oposto. Em sua forma completa, ambas as disposicoes coexistem.</p>
+<p>Freud situa o complexo de Edipo como o nucleo das neuroses e como organizador fundamental da estrutura psiquica. Sua dissolucao — pela ameaca de castracao no menino e pela constatacao da castracao na menina — conduz a formacao do Superego por identificacao com o genitor rival, interiorizando a proibicao do incesto e fundando a lei moral. O Edipo marca, portanto, a passagem da natureza a cultura, da pulsao a civilizacao.</p>
+<p>Lacan retoma o Edipo como operacao logica em tres tempos, articulada pela funcao do Nome-do-Pai. No primeiro tempo, a crianca e o falo imaginario da mae; no segundo tempo, o pai intervem como agente da castracao simbolica, privando a mae do objeto; no terceiro tempo, o pai aparece como portador do falo, permitindo a identificacao e o acesso ao desejo. A metafora paterna substitui o significante do desejo da mae pelo Nome-do-Pai, produzindo a significacao falica e inscrevendo o sujeito na ordem simbolica.</p>`,
+    freud: [
+      { work: "A Interpretacao dos Sonhos", year: 1900, volume: "IV", detail: "Primeira mencao ao Edipo: analise do sonho e identificacao do desejo edipiano como universal." },
+      { work: "Tres Ensaios sobre a Teoria da Sexualidade", year: 1905, volume: "VII", detail: "Situa o Edipo na fase falica e descreve as escolhas objetais infantis." },
+      { work: "A Dissolucao do Complexo de Edipo", year: 1924, volume: "XIX", detail: "Descreve o declinio do Edipo pela ameaca de castracao e a formacao do Superego." },
+      { work: "Totem e Tabu", year: 1913, volume: "XIII", detail: "Mito da horda primitiva: o assassinato do pai primordial como fundacao da lei e do tabu do incesto." }
+    ],
+    lacan: [
+      { work: "Seminario 5: As Formacoes do Inconsciente", year: "1957-1958", detail: "Formaliza os tres tempos do Edipo e a funcao da metafora paterna." },
+      { work: "De uma Questao Preliminar a Todo Tratamento Possivel da Psicose (Escritos)", year: "1958", detail: "Articula a foraclusao do Nome-do-Pai como mecanismo especifico da psicose, por oposicao ao recalque neurotico." },
+      { work: "Seminario 4: A Relacao de Objeto", year: "1956-1957", detail: "Critica a teoria da relacao de objeto e reformula a castracao como operacao simbolica." }
+    ]
+  },
+
+  "transferencia": {
+    title: "Transferencia (Ubertragung)",
+    summary: `<p>A transferencia designa o processo pelo qual os desejos inconscientes se atualizam na relacao analitica, tomando o analista como objeto. O paciente repete, na cena transferencial, os prototipos infantis de suas relacoes amorosas e hostis, projetando no analista figuras parentais e revivendo conflitos edipianos. Freud reconheceu na transferencia tanto o maior obstaculo quanto o mais potente instrumento da cura analitica.</p>
+<p>Freud distinguiu a transferencia positiva (terna e erotica) da transferencia negativa (hostil). A transferencia positiva subdivide-se em sentimentos conscientes de confianca e afeto, e componentes inconscientes de natureza erotica. A resistencia transferencial surge quando o recalcado, em vez de ser rememorado, e atuado na relacao com o analista — o que Freud chamou de compulsao a repeticao.</p>
+<p>Lacan reformula a transferencia pela via do sujeito suposto saber: o analisante atribui ao analista um saber sobre seu inconsciente, e essa suposicao e o que poe em marcha o trabalho analitico. O analista nao encarna o saber, mas sustenta a posicao de semblante para que o sujeito possa decifrar suas proprias formacoes inconscientes. O manejo da transferencia e o destino do sujeito suposto saber sao decisivos para o fim da analise.</p>`,
+    freud: [
+      { work: "A Dinamica da Transferencia", year: 1912, volume: "XII", detail: "Artigo tecnico fundamental: explica como os cliches libidinais infantis se repetem na analise." },
+      { work: "Recordar, Repetir e Elaborar", year: 1914, volume: "XII", detail: "Distingue rememorar de repetir: a transferencia como arena da compulsao a repeticao." },
+      { work: "Observacoes sobre o Amor Transferencial", year: 1915, volume: "XII", detail: "Aborda o manejo da transferencia erotica e os limites eticos do analista." },
+      { work: "Fragmento de uma Analise de Histeria (Caso Dora)", year: 1905, volume: "VII", detail: "Primeira reflexao sistematica sobre a transferencia a partir de um fracasso clinico." }
+    ],
+    lacan: [
+      { work: "Seminario 8: A Transferencia", year: "1960-1961", detail: "Releitura da transferencia via O Banquete de Platao; introduz agalma e o desejo do analista." },
+      { work: "Seminario 11: Os Quatro Conceitos Fundamentais", year: "1964", detail: "Formaliza o sujeito suposto saber como pivo da transferencia." },
+      { work: "A Direcao do Tratamento e os Principios de seu Poder (Escritos)", year: "1958", detail: "Critica a contratransferencia e redefine a posicao do analista na transferencia." }
+    ]
+  },
+
+  "pulsao": {
+    title: "Pulsao (Trieb)",
+    summary: `<p>A pulsao (Trieb) e um conceito-limite entre o somatico e o psiquico, designando a exigencia de trabalho imposta ao aparelho psiquico em consequencia de sua ligacao com o corpo. Diferente do instinto (Instinkt), que e biologicamente fixo, a pulsao e plastica quanto ao objeto e ao alvo, podendo sofrer vicissitudes como o recalque, a sublimacao, a reversao ao contrario e o retorno sobre o proprio sujeito.</p>
+<p>Freud propoe uma primeira dualidade pulsional entre pulsoes sexuais e pulsoes de autoconservacao (pulsoes do ego). A partir de 1920, com "Alem do Principio do Prazer", reformula a teoria em torno da oposicao entre pulsao de vida (Eros) e pulsao de morte (Thanatos). A pulsao de morte — tendencia do organismo a retornar ao estado inorganico — manifesta-se como compulsao a repeticao, agressividade e destrutividade.</p>
+<p>Lacan relera a pulsao como montagem gramatical: uma articulacao entre fonte, pressao, objeto e alvo que circula em torno do objeto a — o objeto causa de desejo, irredutivel a qualquer objeto empirico. No Seminario 11, Lacan distingue quatro pulsoes parciais (oral, anal, escoptca, invocante) e demonstra que a pulsao contorna o objeto sem jamais apreende-lo, satisfazendo-se no proprio percurso — o que diferencia a pulsao do desejo.</p>`,
+    freud: [
+      { work: "Tres Ensaios sobre a Teoria da Sexualidade", year: 1905, volume: "VII", detail: "Introduz a pulsao sexual, suas fontes, objetos e alvos; descreve as pulsoes parciais e as fases libidinais." },
+      { work: "Pulsoes e Destinos da Pulsao (Triebe und Triebschicksale)", year: 1915, volume: "XIV", detail: "Define os quatro componentes da pulsao (pressao, alvo, objeto, fonte) e suas quatro vicissitudes." },
+      { work: "Alem do Principio do Prazer", year: 1920, volume: "XVIII", detail: "Introduz a pulsao de morte e a compulsao a repeticao como forca pulsional independente do principio do prazer." },
+      { work: "O Problema Economico do Masoquismo", year: 1924, volume: "XIX", detail: "Articula pulsao de morte, masoquismo primario e a funcao do Superego." }
+    ],
+    lacan: [
+      { work: "Seminario 11: Os Quatro Conceitos Fundamentais", year: "1964", detail: "Redefine a pulsao como montagem e circuito em torno do objeto a; distingue pulsao e desejo." },
+      { work: "Seminario 7: A Etica da Psicanalise", year: "1959-1960", detail: "Articula pulsao de morte, das Ding (a Coisa) e gozo; discute a sublimacao." },
+      { work: "Subversao do Sujeito e Dialetica do Desejo (Escritos)", year: "1960", detail: "Situa a pulsao no grafo do desejo e distingue demanda, desejo e pulsao." }
+    ]
+  },
+
+  "estadio-do-espelho": {
+    title: "O Estadio do Espelho (Le Stade du Miroir)",
+    summary: `<p>O estadio do espelho designa a experiencia formadora do sujeito, entre os 6 e os 18 meses de idade, na qual a crianca reconhece pela primeira vez sua imagem no espelho como uma totalidade unificada. Esse momento e jubilatorio: a crianca, ainda prematura do ponto de vista motor e dependente do Outro, antecipa imaginariamente uma unidade corporal que ainda nao possui. Essa imagem especular funda o Eu (Moi) como instancia imaginaria.</p>
+<p>Lacan apresentou esse conceito no Congresso de Marienbad em 1936 e o reformulou no texto de 1949. O estadio do espelho revela que o Eu se constitui por identificacao com uma imagem exterior — uma Gestalt que aliena o sujeito, pois a unidade percebida e uma ilusao que encobre a fragmentacao real do corpo. A relacao especular inaugura o registro do Imaginario e a dimensao da agressividade constitutiva, ja que o outro semelhante e simultaneamente modelo e rival.</p>
+<p>Embora Freud nao tenha formulado o estadio do espelho, sua nocao de narcisismo primario e de identificacao com o objeto prepararam o terreno. Em "Introducao ao Narcisismo" (1914), Freud descreve o investimento libidinal na propria imagem como momento constitutivo do Eu, o que Lacan radicaliza ao mostrar que esse Eu e desde o inicio uma construcao alienante — uma "armadura" imaginaria que oculta a divisao do sujeito.</p>`,
+    freud: [
+      { work: "Introducao ao Narcisismo (Zur Einfuhrung des Narzissmus)", year: 1914, volume: "XIV", detail: "Descreve o narcisismo primario como investimento libidinal no Eu; base freudiana para o estadio do espelho." },
+      { work: "O Ego e o Id", year: 1923, volume: "XIX", detail: "Define o Eu como projecao da superficie corporal — 'o ego e sobretudo um ego corporal'." },
+      { work: "Psicologia das Massas e Analise do Eu", year: 1921, volume: "XVIII", detail: "Teoria das identificacoes: o Eu se forma por identificacao com objetos externos." }
+    ],
+    lacan: [
+      { work: "O Estadio do Espelho como Formador da Funcao do Eu (Escritos)", year: "1949", detail: "Texto fundador: descreve a constituicao do Eu pela identificacao especular e a alienacao imaginaria." },
+      { work: "Seminario 1: Os Escritos Tecnicos de Freud", year: "1953-1954", detail: "Retoma o estadio do espelho via esquema optico; distingue eu ideal e ideal do eu." },
+      { work: "A Agressividade em Psicanalise (Escritos)", year: "1948", detail: "Articula a agressividade constitutiva como efeito da rivalidade especular." }
+    ]
+  },
+
+  "recalque": {
+    title: "Recalque (Verdrangung)",
+    summary: `<p>O recalque e o mecanismo de defesa fundamental da neurose, pelo qual uma representacao ligada a uma pulsao e mantida afastada da consciencia por ser incompativel com as exigencias do Eu ou do Superego. O recalque nao aniquila a representacao: ela persiste no inconsciente, exercendo pressao para retornar — o retorno do recalcado manifesta-se nos sintomas, sonhos, lapsos e atos falhos.</p>
+<p>Freud distingue o recalque primario (Urverdrangung) — operacao mitica que constitui o nucleo do inconsciente e funciona como polo de atracao — do recalque propriamente dito (Nachdrangen), que atua sobre derivados do recalcado original. O recalque incide sobre a representacao (Vorstellung), nao sobre o afeto, que pode deslocar-se, converter-se em angustia ou transformar-se em seu contrario.</p>
+<p>Para Lacan, o recalque e uma operacao significante: o significante recalcado cai sob a barra da significacao, permanecendo ativo na cadeia inconsciente. A metafora paterna e o recalque originario por excelencia — o Nome-do-Pai substitui o significante do desejo da mae, produzindo a significacao falica. Lacan distingue o recalque (Verdrangung) neurotico da foraclusao (Verwerfung) psicotica e da renegacao (Verleugnung) perversa como os tres mecanismos que determinam as estruturas clinicas.</p>`,
+    freud: [
+      { work: "O Recalque (Die Verdrangung)", year: 1915, volume: "XIV", detail: "Artigo metapsicologico central: define recalque primario e recalque propriamente dito; destino das representacoes e afetos." },
+      { work: "A Interpretacao dos Sonhos", year: 1900, volume: "V", detail: "Capitulo VII: o recalque como barreira entre os sistemas Ics. e Pcs./Cs." },
+      { work: "Inibicao, Sintoma e Angustia", year: 1926, volume: "XX", detail: "Revisao: a angustia como sinal que desencadeia o recalque, e nao como seu produto." }
+    ],
+    lacan: [
+      { work: "Seminario 3: As Psicoses", year: "1955-1956", detail: "Distingue recalque, foraclusao e renegacao como operacoes que determinam neurose, psicose e perversao." },
+      { work: "A Instancia da Letra no Inconsciente (Escritos)", year: "1957", detail: "O recalque como operacao significante: o significante sob a barra." },
+      { work: "Seminario 11: Os Quatro Conceitos Fundamentais", year: "1964", detail: "Articula recalque originario e alienacao na cadeia significante." }
+    ]
+  },
+
+  "angustia": {
+    title: "Angustia (Angst)",
+    summary: `<p>A angustia ocupa um lugar central na teoria psicanalitica como afeto que sinaliza um perigo para o Eu. Freud revisou profundamente sua concepcao ao longo da obra: na primeira teoria (1895-1915), a angustia resultava da transformacao automatica da libido nao descarregada; na segunda teoria (1926), passou a conceber a angustia como sinal — um afeto produzido pelo Eu diante da percepcao de uma situacao de perigo, que aciona o mecanismo do recalque.</p>
+<p>Em "Inibicao, Sintoma e Angustia", Freud identifica uma serie de situacoes de perigo ao longo do desenvolvimento: perda do objeto, perda do amor do objeto, ameaca de castracao e angustia do Superego (culpa). A angustia automatica corresponde a situacao traumatica — excesso pulsional que transborda a capacidade de ligacao do aparelho psiquico —, enquanto a angustia-sinal e uma forma atenuada que permite ao Eu mobilizar defesas antes que o trauma se instale.</p>
+<p>Lacan dedica o Seminario 10 inteiramente a angustia, definindo-a como o unico afeto que nao engana. A angustia surge quando falta a falta — quando o sujeito e confrontado com o desejo do Outro sem a mediacao do significante falico. Lacan articula a angustia ao objeto a: ela sinaliza a proximidade desse objeto irrepresentavel que causa o desejo. A angustia nao e sem objeto; seu objeto e o objeto a, que emerge nos pontos de cesura do corpo (seio, fezes, olhar, voz).</p>`,
+    freud: [
+      { work: "Inibicao, Sintoma e Angustia (Hemmung, Symptom und Angst)", year: 1926, volume: "XX", detail: "Revisao completa: a angustia como sinal do Eu diante do perigo; hierarquia das situacoes de perigo." },
+      { work: "Conferencia XXV: A Angustia (Conferencias Introdutorias)", year: 1917, volume: "XVI", detail: "Apresentacao da primeira teoria da angustia: transformacao da libido recalcada." },
+      { work: "O Estranho (Das Unheimliche)", year: 1919, volume: "XVII", detail: "Explora a angustia diante do familiar que retorna como estranho; articulacao com o recalcado." }
+    ],
+    lacan: [
+      { work: "Seminario 10: A Angustia", year: "1962-1963", detail: "A angustia como unico afeto que nao engana; relacao com o objeto a e o desejo do Outro; quadro da angustia." },
+      { work: "Seminario 11: Os Quatro Conceitos Fundamentais", year: "1964", detail: "Retoma a angustia em relacao a alienacao e separacao; o encontro faltoso com o real." }
+    ]
+  },
+
+  "narcisismo": {
+    title: "Narcisismo (Narzissmus)",
+    summary: `<p>O narcisismo designa o investimento da libido no proprio Eu, tomando a si mesmo como objeto de amor. Freud introduziu o conceito sistematicamente em 1914, distinguindo o narcisismo primario — estado originario em que a crianca toma a si mesma como objeto libidinal, anterior a escolha de objetos externos — do narcisismo secundario — retorno da libido ao Eu apos ter sido investida em objetos.</p>
+<p>O texto "Introducao ao Narcisismo" opera uma virada teorica ao demonstrar que o Eu nao e dado desde o inicio, mas precisa ser constituido por uma "nova acao psiquica" — o que Lacan lera como o estadio do espelho. Freud introduz os conceitos de Eu ideal (Idealich) — a imagem narcisica de perfeicao — e ideal do Eu (Ichideal) — a instancia que herda o narcisismo infantil e sera precursora do Superego.</p>
+<p>Lacan articula o narcisismo ao registro Imaginario: o amor narcisico e amor pela propria imagem especular, pela Gestalt unificante que o estadio do espelho produziu. A relacao dual a-a' (eu-outro semelhante) e narcisica por estrutura, marcada pela agressividade e pela fascinacao. Somente a intervencao do Simbolico — a lei, o Nome-do-Pai — permite ao sujeito ultrapassar a captura narcisica imaginaria e aceder ao desejo.</p>`,
+    freud: [
+      { work: "Introducao ao Narcisismo", year: 1914, volume: "XIV", detail: "Texto fundador: narcisismo primario e secundario; Eu ideal e ideal do Eu; a libido do Eu vs. libido de objeto." },
+      { work: "Psicologia das Massas e Analise do Eu", year: 1921, volume: "XVIII", detail: "Articulacao entre narcisismo, identificacao e formacao do ideal do Eu nos vinculos sociais." },
+      { work: "Luto e Melancolia", year: 1917, volume: "XIV", detail: "O narcisismo na escolha objetal e a identificacao narcisica com o objeto perdido na melancolia." }
+    ],
+    lacan: [
+      { work: "O Estadio do Espelho (Escritos)", year: "1949", detail: "O narcisismo como efeito da identificacao especular; o Eu como construcao imaginaria." },
+      { work: "Seminario 1: Os Escritos Tecnicos de Freud", year: "1953-1954", detail: "Esquema optico: distingue eu ideal (imaginario) e ideal do eu (simbolico)." },
+      { work: "Seminario 2: O Eu na Teoria de Freud e na Tecnica Psicanalitica", year: "1954-1955", detail: "Critica do ego autonomo; o eu como sede do desconhecimento narcisico." }
+    ]
+  },
+
+  "objeto-a": {
+    title: "Objeto a (Objet petit a)",
+    summary: `<p>O objeto a (objet petit a) e um dos conceitos mais originais de Lacan, designando o objeto causa de desejo — um resto irredutivel que escapa a simbolizacao e a imaginarizacao, motor da dinamica desejante do sujeito. Nao e um objeto empirico, mas uma funcao logica: aquilo que se perde na constituicao do sujeito e que ele busca reencontrar sem jamais alcanca-lo.</p>
+<p>Lacan extrai o objeto a da releitura das pulsoes parciais freudianas: o seio, as fezes, o olhar e a voz sao as formas privilegiadas desse objeto, correspondendo aos quatro orifcios pulsionais do corpo. O objeto a e o que resta da operacao de separacao entre o sujeito e o Outro — o que cai quando o sujeito se constitui na linguagem, produzindo a falta que funda o desejo.</p>
+<p>Na teoria dos discursos (Seminario 17), o objeto a ocupa diferentes posicoes conforme a estrutura discursiva: e a producao no discurso do mestre, o agente no discurso do analista, a verdade no discurso da universidade. No discurso do capitalista, o objeto a circula como mais-de-gozar, capturado pela logica do consumo. O conceito remete tambem a mais-valia marxiana — o objeto a como "mais-de-gozar" (plus-de-jouir) e a parcela de gozo perdida na entrada do sujeito na linguagem.</p>`,
+    freud: [
+      { work: "Tres Ensaios sobre a Teoria da Sexualidade", year: 1905, volume: "VII", detail: "As pulsoes parciais e seus objetos (seio, fezes): base freudiana para o objeto a lacaniano." },
+      { work: "Pulsoes e Destinos da Pulsao", year: 1915, volume: "XIV", detail: "A variabilidade do objeto da pulsao: o objeto como o elemento mais contingente da pulsao." },
+      { work: "Alem do Principio do Prazer", year: 1920, volume: "XVIII", detail: "O jogo do Fort-Da: a crianca encena a perda e o reencontro do objeto — prototipo do objeto a." }
+    ],
+    lacan: [
+      { work: "Seminario 10: A Angustia", year: "1962-1963", detail: "Formalizacao do objeto a: queda do objeto na divisao do sujeito; as cinco formas (seio, fezes, falo, olhar, voz)." },
+      { work: "Seminario 11: Os Quatro Conceitos Fundamentais", year: "1964", detail: "O objeto a como causa de desejo na operacao de separacao; a pulsao contorna o objeto a." },
+      { work: "Seminario 17: O Avesso da Psicanalise", year: "1969-1970", detail: "O objeto a como mais-de-gozar nos quatro discursos; articulacao com a mais-valia." }
+    ]
+  },
+
+  "real-simbolico-imaginario": {
+    title: "Real, Simbolico e Imaginario (RSI)",
+    summary: `<p>Os tres registros — Real, Simbolico e Imaginario — constituem a topologia fundamental do ensino de Lacan, designando as tres dimensoes da experiencia humana que se articulam entre si de forma inextricavel. Lacan os introduz progressivamente e, no final de seu ensino (Seminario 22-23), formaliza sua articulacao pelo no borromeu: tres aneis entrelagados de tal forma que o rompimento de qualquer um libera os outros dois.</p>
+<p>O Imaginario e o registro da imagem, da semelhanca, da identificacao especular. Funda-se no estadio do espelho e rege as relacoes duais (eu-outro), marcadas pela fascinacao e pela agressividade. O Simbolico e o registro da linguagem, da lei, do significante. Determina o sujeito pela cadeia significante, pelo Nome-do-Pai e pela castracao simbolica. E o Outro (grande Outro) como tesouro dos significantes. O Real e o que escapa tanto ao imaginario quanto ao simbolico — o impossivel, aquilo que nao cessa de nao se escrever. Nao e a realidade empirica, mas o que resiste a simbolizacao: o trauma, o gozo, o que retorna sempre ao mesmo lugar.</p>
+<p>Embora Freud nao tenha formalizado os tres registros, Lacan os extrai da obra freudiana: o Imaginario corresponde as identificacoes narcisicas; o Simbolico, ao complexo de Edipo, a lei e a castracao; o Real, ao trauma, a angustia e ao irrepresentavel — o umbigo do sonho, o rochedo da castracao.</p>`,
+    freud: [
+      { work: "A Interpretacao dos Sonhos", year: 1900, volume: "V", detail: "O 'umbigo do sonho' como ponto irredutivel: prototipo do Real lacaniano." },
+      { work: "Analise Terminavel e Interminavel", year: 1937, volume: "XXIII", detail: "O 'rochedo da castracao' como limite da analise: o Real como impossivel." },
+      { work: "Projeto para uma Psicologia Cientifica", year: 1895, volume: "I", detail: "Das Ding (a Coisa) como ncleo irrepresentavel: antecedente do Real." }
+    ],
+    lacan: [
+      { work: "Seminario 22: RSI", year: "1974-1975", detail: "Formalizacao topologica dos tres registros pelo no borromeu." },
+      { work: "O Simbolico, o Imaginario e o Real (conferencia)", year: "1953", detail: "Primeira apresentacao dos tres registros como dimensoes fundamentais." },
+      { work: "Seminario 23: O Sinthoma", year: "1975-1976", detail: "O sinthoma como quarto elo que mantem os tres registros amarrados; o caso Joyce." }
+    ]
+  },
+
+  "nome-do-pai": {
+    title: "O Nome-do-Pai (Le Nom-du-Pere)",
+    summary: `<p>O Nome-do-Pai e o significante da funcao paterna na teoria de Lacan, designando a instancia simbolica que instaura a lei da proibicao do incesto e permite ao sujeito aceder a ordem simbolica. Nao se refere ao pai real ou biologico, mas a uma funcao estrutural que pode ser exercida por qualquer representante da lei e da castracao.</p>
+<p>A operacao fundamental do Nome-do-Pai e a metafora paterna: o significante Nome-do-Pai substitui o significante do desejo da mae (o falo imaginario que a crianca encarna), produzindo a significacao falica — a capacidade de significar, de desejar, de aceder ao sentido. Essa operacao corresponde ao recalque originario e funda a estrutura neurotica.</p>
+<p>Quando o Nome-do-Pai e foracluido (Verwerfung) — isto e, nao inscrito no Simbolico do sujeito — a consequencia estrutural e a psicose. Na ausencia desse significante ordenador, o sujeito fica vulneravel ao desencadeamento psicotico quando confrontado com uma situacao que convoca a funcao paterna (Um-pai). O delirio psicotico e, nessa leitura, uma tentativa de reconstituicao do mundo simbolico a partir do Imaginario — uma metafora delirante que tenta suprir a metafora paterna faltante.</p>`,
+    freud: [
+      { work: "Totem e Tabu", year: 1913, volume: "XIII", detail: "O pai da horda primitiva e a funcao simbolica do pai morto como fundador da lei." },
+      { work: "Moises e o Monoteismo", year: 1939, volume: "XXIII", detail: "O pai como funcao simbolica transmitida pela tradicao; o assassinato fundador." },
+      { work: "O Ego e o Id", year: 1923, volume: "XIX", detail: "O Superego como herdeiro do complexo de Edipo: interiorizacao da funcao paterna." }
+    ],
+    lacan: [
+      { work: "De uma Questao Preliminar a Todo Tratamento Possivel da Psicose (Escritos)", year: "1958", detail: "Formula da metafora paterna; a foraclusao do Nome-do-Pai como mecanismo da psicose." },
+      { work: "Seminario 3: As Psicoses", year: "1955-1956", detail: "Analise do caso Schreber: a foraclusao e o retorno no Real do que nao foi simbolizado." },
+      { work: "Seminario 5: As Formacoes do Inconsciente", year: "1957-1958", detail: "Os tres tempos do Edipo e a inscricao do Nome-do-Pai na cadeia significante." }
+    ]
+  },
+
+  "gozo": {
+    title: "Gozo (Jouissance)",
+    summary: `<p>O gozo (jouissance) e um conceito central no ensino de Lacan, distinto do prazer (Lust) freudiano. Enquanto o prazer obedece ao principio de constancia — reducao da tensao —, o gozo designa uma satisfacao paradoxal que vai alem do prazer, podendo ser experimentada como sofrimento. O gozo e o que excede o principio do prazer, articulando-se ao que Freud chamou de pulsao de morte.</p>
+<p>Lacan distingue tres modalidades de gozo: o gozo do Outro (gozo absoluto, mitico, impossivel — interditado pela castracao), o gozo falico (gozo permitido, regulado pelo significante, articulado a funcao falica) e o gozo do corpo ou gozo feminino (um gozo suplementar, para-alem do falo, que nao pode ser dito — "existe mas nao se pode falar dele", Seminario 20). A castracao e a operacao que barra o gozo absoluto e permite o acesso ao gozo falico, mediado pela linguagem.</p>
+<p>O sintoma, para Lacan, e um modo de gozo: o neurotico sofre de seu sintoma, mas nele encontra uma satisfacao substitutiva — o que explica a resistencia a cura. O conceito de mais-de-gozar (plus-de-jouir), homologo a mais-valia marxiana, designa a parcela de gozo que o sujeito perde ao entrar na linguagem e que busca recuperar repetitivamente, sem jamais alcanca-la plenamente.</p>`,
+    freud: [
+      { work: "Alem do Principio do Prazer", year: 1920, volume: "XVIII", detail: "A compulsao a repeticao como satisfacao paradoxal que vai alem do principio do prazer — base do gozo lacaniano." },
+      { work: "O Problema Economico do Masoquismo", year: 1924, volume: "XIX", detail: "Masoquismo primario e satisfacao na dor: prototipo da dimensao paradoxal do gozo." },
+      { work: "O Mal-Estar na Civilizacao", year: 1930, volume: "XXI", detail: "A renuncia pulsional exigida pela cultura e o gozo que insiste como mal-estar." }
+    ],
+    lacan: [
+      { work: "Seminario 7: A Etica da Psicanalise", year: "1959-1960", detail: "Das Ding e o gozo interditado; a Lei como barreira ao gozo; Antfgona e o belo como limite." },
+      { work: "Seminario 17: O Avesso da Psicanalise", year: "1969-1970", detail: "Mais-de-gozar e entropia; gozo e discurso; o impossvel do gozo." },
+      { work: "Seminario 20: Mais, Ainda (Encore)", year: "1972-1973", detail: "Gozo falico e gozo feminino; gozo suplementar; as formulas da sexuacao; 'A mulher nao existe'." }
+    ]
+  },
+
+  "sonhos": {
+    title: "A Interpretacao dos Sonhos (Traumdeutung)",
+    summary: `<p>A interpretacao dos sonhos e, nas palavras de Freud, a "via regia para o conhecimento do inconsciente". Na obra magna publicada em 1900, Freud demonstra que o sonho nao e um fenomeno aleatorio ou fisiologico, mas uma formacao do inconsciente dotada de sentido — uma realizacao (disfarada) de um desejo (recalcado). O sonho e o "guardiao do sono": transforma o desejo inconsciente em imagens aceitaveis para evitar o despertar.</p>
+<p>Freud distingue o conteudo manifesto (a narrativa lembrada) do conteudo latente (os pensamentos inconscientes que o sonho expressa). O trabalho do sonho (Traumarbeit) transforma o conteudo latente em manifesto por quatro operacoes: condensacao (Verdichtung), deslocamento (Verschiebung), figurabilidade (representacao por imagens) e elaboracao secundaria (racionalizacao narrativa). A analise do sonho percorre o caminho inverso, das associacoes livres ao conteudo latente.</p>
+<p>Lacan relera o trabalho do sonho pelas categorias linguisticas: a condensacao corresponde a metafora (substituicao significante) e o deslocamento a metonimia (deslizamento na cadeia significante). O sonho e uma formacao do inconsciente — como o lapso, o chiste e o sintoma — regida pelas leis do significante. O desejo do sonho, para Lacan, nao e um conteudo a ser descoberto, mas o proprio movimento metonimico que anima a cadeia onirica — o desejo e a metonimia da falta-a-ser.</p>`,
+    freud: [
+      { work: "A Interpretacao dos Sonhos (Die Traumdeutung)", year: 1900, volume: "IV-V", detail: "Obra fundadora: o sonho como realizacao de desejo; as quatro operacoes do trabalho do sonho; o aparelho psiquico." },
+      { work: "Sobre os Sonhos (Uber den Traum)", year: 1901, volume: "V", detail: "Versao resumida e acessivel da Traumdeutung para o publico geral." },
+      { work: "Conferencias Introdutorias sobre Psicanalise (Conferencias V-XV)", year: 1916, volume: "XV", detail: "Apresentacao didatica da teoria dos sonhos: simbolismo, censura, deformacao onirica." }
+    ],
+    lacan: [
+      { work: "A Instancia da Letra no Inconsciente (Escritos)", year: "1957", detail: "Condensacao como metafora e deslocamento como metonimia: releitura linguistica do trabalho do sonho." },
+      { work: "Seminario 5: As Formacoes do Inconsciente", year: "1957-1958", detail: "O sonho como formacao do inconsciente regida pelas leis do significante." },
+      { work: "Seminario 11: Os Quatro Conceitos Fundamentais", year: "1964", detail: "O sonho e o encontro faltoso com o Real; a tyche e o automaton." }
+    ]
+  },
+
+  "desejo": {
+    title: "O Desejo (Wunsch / Desir)",
+    summary: `<p>O desejo (Wunsch em Freud, desir em Lacan) e um conceito central que distingue a psicanalise de qualquer psicologia da necessidade ou da motivacao. Para Freud, o desejo nasce da experiencia original de satisfacao: a primeira vivencia de prazer deixa um traco mnemonico, e o desejo e o movimento de reinvestir essa imagem — uma tentativa de reencontrar uma satisfacao primeira que, por ser mitica, jamais se realiza plenamente.</p>
+<p>Freud articula o desejo primordialmente ao sonho ("o sonho e a realizacao de um desejo"), mas o estende a toda a vida psiquica: o desejo inconsciente e indestrutivel, atemporal, e busca incessantemente se realizar atraves das formacoes do inconsciente. O desejo edipiano — o desejo pela mae, o desejo de morte do pai — e o desejo nuclear em torno do qual se organiza a neurose.</p>
+<p>Lacan radicaliza: "o desejo do homem e o desejo do Outro". O sujeito deseja a partir do campo do Outro — deseja ser desejado, deseja o que o Outro deseja. O desejo e distinto da necessidade (biologica) e da demanda (articulada na fala): a demanda, ao ser formulada em significantes, perde algo da necessidade — esse resto e o desejo, que por isso e sempre desejo de outra coisa, metonimia infinita. O desejo e causado pelo objeto a, objeto para sempre perdido que o sujeito busca sem saber.</p>`,
+    freud: [
+      { work: "A Interpretacao dos Sonhos", year: 1900, volume: "V", detail: "O sonho como realizacao de desejo; a experiencia de satisfacao e o desejo como reinvestimento do traco." },
+      { work: "Formulacoes sobre os Dois Principios do Funcionamento Mental", year: 1911, volume: "XII", detail: "Principio do prazer e principio de realidade; o desejo como motor do aparelho psiquico." },
+      { work: "Tres Ensaios sobre a Teoria da Sexualidade", year: 1905, volume: "VII", detail: "A sexualidade infantil e as escolhas de objeto como expressoes do desejo." }
+    ],
+    lacan: [
+      { work: "Subversao do Sujeito e Dialetica do Desejo (Escritos)", year: "1960", detail: "Formaliza a distincao necessidade-demanda-desejo no grafo do desejo." },
+      { work: "A Direcao do Tratamento e os Principios de seu Poder (Escritos)", year: "1958", detail: "'O desejo e o desejo do Outro'; o desejo do analista como funcao na direcao do tratamento." },
+      { work: "Seminario 6: O Desejo e sua Interpretacao", year: "1958-1959", detail: "Analise do Hamlet de Shakespeare como paradigma da relacao do sujeito com o desejo." }
+    ]
+  },
+
+  "significante": {
+    title: "Significante (Signifiant)",
+    summary: `<p>O significante e o conceito que Lacan importa da linguistica de Ferdinand de Saussure para refundar a psicanalise. Enquanto Saussure definia o signo linguistico como uniao entre significante (imagem acustica) e significado (conceito), Lacan inverte a primazia: o significante precede e determina o significado, e a barra entre ambos — longe de ser uniao — marca a resistencia a significacao. O algoritmo lacaniano S/s (significante sobre significado) indica que o significante domina.</p>
+<p>Para Lacan, "um significante e o que representa o sujeito para outro significante" — definicao que situa o sujeito nao como senhor da fala, mas como efeito da cadeia significante. O sujeito do inconsciente emerge entre dois significantes (S1 e S2), nos intervalos da cadeia — nos tropecos, nos lapsos, nos cortes do discurso. O significante-mestre (S1) e o significante que representa o sujeito; o saber (S2) e a bateria dos demais significantes.</p>
+<p>As leis do significante — metafora (substituicao de um significante por outro, produzindo efeito de sentido) e metonimia (conexao de significante a significante, produzindo deslizamento do sentido) — sao as mesmas que Freud descreveu como condensacao e deslocamento no trabalho do inconsciente. Dessa forma, Lacan sustenta que o inconsciente e estruturado como uma linguagem.</p>`,
+    freud: [
+      { work: "A Interpretacao dos Sonhos", year: 1900, volume: "IV-V", detail: "Condensacao e deslocamento como operacoes do trabalho do sonho: base das leis do significante." },
+      { work: "A Psicopatologia da Vida Cotidiana", year: 1901, volume: "VI", detail: "Lapsos, atos falhos e esquecimentos como emergencia do significante recalcado." },
+      { work: "Os Chistes e sua Relacao com o Inconsciente", year: 1905, volume: "VIII", detail: "O jogo de palavras e a tecnica do chiste: o trabalho do significante no humor." }
+    ],
+    lacan: [
+      { work: "A Instancia da Letra no Inconsciente (Escritos)", year: "1957", detail: "Algoritmo S/s; leis da metafora e metonimia; 'o inconsciente e estruturado como uma linguagem'." },
+      { work: "Seminario 3: As Psicoses", year: "1955-1956", detail: "Autonomia do significante; ponto de basta (point de capiton); cadeia significante." },
+      { work: "Seminario 17: O Avesso da Psicanalise", year: "1969-1970", detail: "S1 e S2 nos quatro discursos; o significante-mestre e o saber." }
+    ]
+  },
+
+  "castracao": {
+    title: "Castracao (Kastration)",
+    summary: `<p>A castracao designa, em psicanalise, nao uma mutilacao anatomica, mas uma operacao simbolica fundamental que inscreve a falta no sujeito e o submete a lei do desejo. Freud descobriu o complexo de castracao na clinica: a angustia do menino diante da fantasia de perder o penis (ameaca de castracao) e a constatacao pela menina da "ausencia" do penis (ferida narcisica), que reorganizam a relacao do sujeito com o desejo e com a diferenca sexual.</p>
+<p>Para Freud, o complexo de castracao e o pivo da dissolucao do Edipo no menino — a ameaca de castracao o leva a renunciar ao objeto materno — e o motor da entrada no Edipo na menina — a constatacao da castracao a dirige ao pai como objeto de amor. A castracao funda a diferenca sexual e a assuncao de uma posicao subjetiva diante do falo.</p>
+<p>Lacan simboliza a castracao como a operacao pela qual o sujeito perde o gozo absoluto ao entrar na linguagem. A castracao e o preco pago pela inscricao no Simbolico — ninguem possui o falo, todos estao submetidos a sua funcao. Lacan distingue tres operacoes: privacao (falta real de um objeto simbolico), frustracao (falta imaginaria de um objeto real) e castracao (falta simbolica de um objeto imaginario — o falo). A castracao nao e um destino anatomico, mas uma posicao logica diante do falo como significante.</p>`,
+    freud: [
+      { work: "A Organizacao Genital Infantil", year: 1923, volume: "XIX", detail: "O primado do falo e a logica falico/castrado como unica oposicao disponivel na fase falica." },
+      { work: "A Dissolucao do Complexo de Edipo", year: 1924, volume: "XIX", detail: "A ameaca de castracao como motor da dissolucao do Edipo no menino." },
+      { work: "Algumas Consequencias Psiquicas da Distincao Anatomica entre os Sexos", year: 1925, volume: "XIX", detail: "A 'inveja do penis' e a castracao como eixo da sexualidade feminina." },
+      { work: "Analise Terminavel e Interminavel", year: 1937, volume: "XXIII", detail: "O 'rochedo da castracao' como limite da analise: a recusa da feminilidade." }
+    ],
+    lacan: [
+      { work: "Seminario 4: A Relacao de Objeto", year: "1956-1957", detail: "Distingue privacao, frustracao e castracao como tres modalidades da falta; o falo como objeto imaginario." },
+      { work: "A Significacao do Falo (Escritos)", year: "1958", detail: "O falo como significante do desejo; ninguem tem o falo — ser ou ter." },
+      { work: "Seminario 5: As Formacoes do Inconsciente", year: "1957-1958", detail: "A castracao no interior dos tres tempos do Edipo; a funcao do pai como agente da castracao simbolica." }
+    ]
+  }
+};
+
+let currentTopic = null;
+
+// Init
+window.addEventListener('DOMContentLoaded', () => {
+  const grid = document.getElementById('topicsGrid');
+  grid.innerHTML = Object.entries(TOPICS).map(([key, t]) =>
+    `<span class="topic-chip" onclick="loadTopic('${key}')">${t.title.split('(')[0].trim()}</span>`
+  ).join('');
+
+  const savedKey = localStorage.getItem('gemini_key');
+  if (savedKey) document.getElementById('apiKey').value = savedKey;
+});
+
+function toggleApiConfig() {
+  document.getElementById('apiConfig').classList.toggle('open');
+}
+
+function search() {
+  const query = document.getElementById('searchInput').value.trim().toLowerCase();
+  if (!query) return;
+
+  const normalized = query.normalize('NFD').replace(/[̀-ͯ]/g, '');
+  let found = null;
+  for (const [key, topic] of Object.entries(TOPICS)) {
+    const titleNorm = topic.title.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const keyNorm = key.normalize('NFD').replace(/[̀-ͯ]/g, '');
+    if (titleNorm.includes(normalized) || keyNorm.includes(normalized) || normalized.includes(keyNorm)) {
+      found = key;
+      break;
+    }
+  }
+
+  if (found) {
+    loadTopic(found);
+  } else {
+    fetchFromGemini(query);
+  }
+}
+
+function loadTopic(key) {
+  const topic = TOPICS[key];
+  if (!topic) return;
+  currentTopic = topic;
+
+  document.getElementById('resultTitle').textContent = topic.title;
+  document.getElementById('resultBadge').textContent = 'Conteudo revisado';
+  document.getElementById('resultBadge').className = 'result-badge badge-pregen';
+  document.getElementById('resultSummary').innerHTML = topic.summary;
+
+  renderRefs('refFreud', topic.freud);
+  renderRefs('refLacan', topic.lacan);
+
+  document.getElementById('resultArea').classList.add('active');
+  document.getElementById('loading').classList.remove('active');
+  document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderRefs(containerId, refs) {
+  document.getElementById(containerId).innerHTML = refs.map(r =>
+    `<div class="ref-item">
+      <span class="ref-work">${r.work}</span>
+      <span class="ref-year">(${r.year}${r.volume ? ', vol. ' + r.volume : ''})</span>
+      <div class="ref-detail">${r.detail}</div>
+    </div>`
+  ).join('');
+}
+
+async function fetchFromGemini(query) {
+  const apiKey = document.getElementById('apiKey').value || localStorage.getItem('gemini_key');
+  if (!apiKey) {
+    alert('Para pesquisar temas personalizados, configure sua chave Gemini API (gratuita) clicando no icone de engrenagem.');
+    return;
+  }
+
+  document.getElementById('loading').classList.add('active');
+  document.getElementById('resultArea').classList.remove('active');
+
+  const prompt = `Voce e um academico especialista em psicanalise, com profundo conhecimento das obras completas de Sigmund Freud (Edicao Standard Brasileira, Imago, 24 volumes) e Jacques Lacan (Seminarios e Escritos, Jorge Zahar Editor).
+
+O usuario pesquisou: "${query}"
+
+Responda em formato JSON valido (sem markdown, sem code blocks) com esta estrutura exata:
+{
+  "title": "Titulo do conceito em portugues (termo original entre parenteses)",
+  "summary": "Texto academico de 4-5 paragrafos explicando o conceito. Cada paragrafo em tag <p>. Aborde: definicao, desenvolvimento em Freud, reformulacao em Lacan, relevancia clinica. Use linguagem academica rigorosa em portugues. Nao use acentos especiais.",
+  "freud": [
+    {"work": "Nome da obra", "year": 1900, "volume": "IV", "detail": "Explicacao de como o conceito aparece nesta obra."},
+    {"work": "...", "year": 0, "volume": "...", "detail": "..."}
+  ],
+  "lacan": [
+    {"work": "Nome do seminario ou escrito", "year": "1964", "detail": "Explicacao de como Lacan trabalha o conceito."},
+    {"work": "...", "year": "...", "detail": "..."}
+  ]
+}
+
+Inclua 3-4 referencias de Freud e 2-3 de Lacan. Todas as referencias devem ser obras REAIS e existentes. Indique o volume da Edicao Standard para Freud.`;
+
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.3, maxOutputTokens: 4000 }
+        })
+      }
+    );
+
+    if (!response.ok) throw new Error(`API retornou ${response.status}`);
+    const data = await response.json();
+    let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    text = text.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+
+    const topic = JSON.parse(text);
+    currentTopic = topic;
+
+    document.getElementById('resultTitle').textContent = topic.title;
+    document.getElementById('resultBadge').textContent = 'Gerado por IA';
+    document.getElementById('resultBadge').className = 'result-badge badge-ai';
+    document.getElementById('resultSummary').innerHTML = topic.summary;
+
+    renderRefs('refFreud', topic.freud);
+    renderRefs('refLacan', topic.lacan);
+
+    document.getElementById('resultArea').classList.add('active');
+    document.getElementById('loading').classList.remove('active');
+    document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth' });
+
+  } catch (e) {
+    document.getElementById('loading').classList.remove('active');
+    alert('Erro ao consultar Gemini: ' + e.message);
+  }
+}
+
+function exportArtigo() {
+  if (!currentTopic) return;
+  const t = currentTopic;
+  let text = `TITULO: ${t.title.toUpperCase()}\n`;
+  text += `Uma analise a partir das obras de Sigmund Freud e Jacques Lacan\n\n`;
+  text += `${'='.repeat(60)}\n\n`;
+  text += `RESUMO\n\n`;
+  const plainSummary = t.summary.replace(/<\/?p>/g, '\n').trim();
+  const sentences = plainSummary.split(/\.\s+/);
+  text += sentences.slice(0, 4).join('. ') + '.\n\n';
+  text += `Palavras-chave: ${t.title.split('(')[0].trim()}; Psicanalise; Freud; Lacan; Inconsciente.\n\n`;
+  text += `${'='.repeat(60)}\n\n`;
+  text += `1 INTRODUCAO\n\n`;
+  const paras = plainSummary.split('\n').filter(p => p.trim());
+  text += (paras[0] || '') + '\n\n';
+  text += `O presente artigo propoe uma analise aprofundada do conceito de ${t.title.split('(')[0].trim()}, percorrendo suas formulacoes nas obras de Sigmund Freud e as releituras propostas por Jacques Lacan. A investigacao se justifica pela centralidade desse conceito na teoria e na clinica psicanalitica, exigindo uma articulacao rigorosa entre os dois autores.\n\n`;
+  text += `2 DESENVOLVIMENTO EM FREUD\n\n`;
+  text += (paras[1] || paras[0] || '') + '\n\n';
+  t.freud.forEach((r, i) => {
+    text += `Em "${r.work}" (${r.year}), Freud ${r.detail.charAt(0).toLowerCase() + r.detail.slice(1)} (FREUD, ${r.year}, vol. ${r.volume || 'S/N'}).\n\n`;
+  });
+  text += `3 A RELEITURA DE LACAN\n\n`;
+  text += (paras[2] || '') + '\n\n';
+  t.lacan.forEach((r, i) => {
+    text += `No "${r.work}" (${r.year}), Lacan ${r.detail.charAt(0).toLowerCase() + r.detail.slice(1)} (LACAN, ${r.year}).\n\n`;
+  });
+  text += `4 ARTICULACOES CLINICAS\n\n`;
+  text += (paras[3] || `A articulacao entre as formulacoes de Freud e Lacan sobre ${t.title.split('(')[0].trim()} possui implicacoes clinicas fundamentais. A escuta analitica, orientada por esses referenciais teoricos, permite ao analista situar-se diante das manifestacoes desse conceito na fala do analisante, sustentando a direcao do tratamento.`) + '\n\n';
+  text += `5 CONSIDERACOES FINAIS\n\n`;
+  text += `O percurso realizado demonstra que o conceito de ${t.title.split('(')[0].trim()} constitui um ponto de articulacao fundamental entre Freud e Lacan. Enquanto Freud delineou as bases clinicas e metapsicologicas, Lacan formalizou e radicalizou suas implicacoes estruturais, abrindo novas possibilidades para a pratica analitica contemporanea.\n\n`;
+  text += `${'='.repeat(60)}\n\n`;
+  text += `REFERENCIAS (ABNT NBR 6023)\n\n`;
+  t.freud.forEach(r => {
+    text += `FREUD, Sigmund. ${r.work}. In: Edicao Standard Brasileira das Obras Psicologicas Completas de Sigmund Freud. Rio de Janeiro: Imago, 1996. v. ${r.volume || 'S/N'}. Publicacao original: ${r.year}.\n\n`;
+  });
+  t.lacan.forEach(r => {
+    if (r.work.includes('Escritos') || r.work.includes('escritos')) {
+      text += `LACAN, Jacques. ${r.work}. In: Escritos. Rio de Janeiro: Jorge Zahar Editor, 1998. Publicacao original: ${r.year}.\n\n`;
+    } else {
+      text += `LACAN, Jacques. ${r.work}. Rio de Janeiro: Jorge Zahar Editor. Publicacao original: ${r.year}.\n\n`;
+    }
+  });
+  text += `\nArtigo formatado segundo ABNT NBR 6022 (artigo cientifico) e NBR 6023 (referencias).\n`;
+  text += `Conteudo gerado por Inteligencia Artificial (IA) — requer revisao academica.`;
+
+  showModal('Artigo Cientifico — ABNT (10 paginas)', text);
+}
+
+function exportAula() {
+  if (!currentTopic) return;
+  const t = currentTopic;
+  const plainSummary = t.summary.replace(/<\/?p>/g, '\n').trim();
+  const paras = plainSummary.split('\n').filter(p => p.trim());
+
+  let text = `ROTEIRO DE AULA — ${t.title.toUpperCase()}\n`;
+  text += `Duracao total: 120 minutos (2 horas)\n`;
+  text += `${'='.repeat(60)}\n\n`;
+
+  text += `BLOCO 1 — ABERTURA E CONTEXTUALIZACAO (20 min)\n\n`;
+  text += `[0-5 min] Acolhimento e apresentacao do tema\n`;
+  text += `- Apresentar o conceito: ${t.title}\n`;
+  text += `- Perguntar aos alunos: "O que voces entendem por ${t.title.split('(')[0].trim()}?"\n`;
+  text += `- Anotar respostas no quadro\n\n`;
+  text += `[5-20 min] Contexto historico e introducao\n`;
+  text += `- ${paras[0] ? paras[0].substring(0, 300) : 'Apresentar o contexto historico do conceito'}...\n`;
+  text += `- Situar o conceito na historia da psicanalise\n`;
+  text += `- Mencionar a relevancia clinica e teorica\n\n`;
+
+  text += `BLOCO 2 — FREUD: FUNDAMENTOS (30 min)\n\n`;
+  text += `[20-35 min] Exposicao das formulacoes freudianas\n`;
+  text += `- ${paras[1] ? paras[1].substring(0, 300) : 'Desenvolvimento do conceito em Freud'}...\n\n`;
+  text += `[35-45 min] Textos fundamentais de Freud\n`;
+  t.freud.forEach(r => {
+    text += `- "${r.work}" (${r.year}, vol. ${r.volume || 'S/N'}): ${r.detail}\n`;
+  });
+  text += `\n[45-50 min] Leitura comentada de trecho selecionado\n`;
+  text += `- Sugestao: selecionar 1-2 paragrafos de "${t.freud[0].work}" para leitura em sala\n`;
+  text += `- Discutir vocabulario e conceitos-chave\n\n`;
+
+  text += `--- INTERVALO (10 min) ---\n\n`;
+
+  text += `BLOCO 3 — LACAN: RELEITURA E FORMALIZACAO (30 min)\n\n`;
+  text += `[60-75 min] A contribuicao de Lacan\n`;
+  text += `- ${paras[2] ? paras[2].substring(0, 300) : 'Reformulacao lacaniana do conceito'}...\n\n`;
+  text += `[75-85 min] Textos fundamentais de Lacan\n`;
+  t.lacan.forEach(r => {
+    text += `- "${r.work}" (${r.year}): ${r.detail}\n`;
+  });
+  text += `\n[85-90 min] Comparacao Freud x Lacan\n`;
+  text += `- Montar quadro comparativo no quadro/slide\n`;
+  text += `- Continuidades e rupturas\n`;
+  text += `- O que Lacan acrescenta a Freud?\n\n`;
+
+  text += `BLOCO 4 — ARTICULACAO CLINICA E ENCERRAMENTO (30 min)\n\n`;
+  text += `[90-105 min] Implicacoes clinicas\n`;
+  text += `- Como esse conceito aparece na clinica?\n`;
+  text += `- Exemplos clinicos (vinhetas anonimizadas)\n`;
+  text += `- Discussao: como a escuta analitica se orienta por esse conceito?\n\n`;
+  text += `[105-115 min] Atividade em grupo\n`;
+  text += `- Dividir em grupos de 3-4\n`;
+  text += `- Tarefa: "Identifiquem uma situacao clinica cotidiana onde ${t.title.split('(')[0].trim()} se manifesta"\n`;
+  text += `- Compartilhar com a turma\n\n`;
+  text += `[115-120 min] Sintese e encerramento\n`;
+  text += `- Retomar os pontos principais\n`;
+  text += `- Indicacao de leitura para proxima aula\n`;
+  text += `- Leitura obrigatoria: "${t.freud[0].work}" (${t.freud[0].year})\n`;
+  text += `- Leitura complementar: "${t.lacan[0].work}" (${t.lacan[0].year})\n\n`;
+
+  text += `${'='.repeat(60)}\n`;
+  text += `RECURSOS NECESSARIOS\n`;
+  text += `- Projetor / slides\n`;
+  text += `- Quadro branco\n`;
+  text += `- Copias do trecho selecionado para leitura\n`;
+  text += `- Bibliografia indicada disponivel na biblioteca\n\n`;
+  text += `Conteudo gerado por Inteligencia Artificial (IA) — requer revisao do docente.`;
+
+  showModal('Roteiro de Aula — 120 minutos', text);
+}
+
+function exportSlides() {
+  if (!currentTopic) return;
+  const t = currentTopic;
+  const plainSummary = t.summary.replace(/<\/?p>/g, '\n').trim();
+  const paras = plainSummary.split('\n').filter(p => p.trim());
+
+  let text = `ESQUEMA PARA SLIDES — ${t.title.toUpperCase()}\n`;
+  text += `Total estimado: 20-25 slides\n`;
+  text += `${'='.repeat(60)}\n\n`;
+
+  text += `SLIDE 1 — CAPA\n`;
+  text += `- Titulo: ${t.title}\n`;
+  text += `- Subtitulo: Uma leitura a partir de Freud e Lacan\n`;
+  text += `- Nome do apresentador / instituicao / data\n\n`;
+
+  text += `SLIDE 2 — SUMARIO\n`;
+  text += `- 1. Introducao e contexto\n`;
+  text += `- 2. Formulacoes em Freud\n`;
+  text += `- 3. Releitura de Lacan\n`;
+  text += `- 4. Articulacoes clinicas\n`;
+  text += `- 5. Sintese e referencias\n\n`;
+
+  text += `SLIDE 3 — INTRODUCAO\n`;
+  text += `- O que e ${t.title.split('(')[0].trim()}?\n`;
+  text += `- Relevancia para a psicanalise\n`;
+  text += `- Pergunta disparadora para a plateia\n\n`;
+
+  text += `SLIDE 4 — CONTEXTO HISTORICO\n`;
+  const firstSentences = (paras[0] || '').split(/\.\s+/).slice(0, 2);
+  firstSentences.forEach(s => { text += `- ${s.trim()}.\n`; });
+  text += `\n`;
+
+  // Freud slides
+  text += `SLIDE 5 — FREUD: VISAO GERAL\n`;
+  const freudSentences = (paras[1] || '').split(/\.\s+/).slice(0, 3);
+  freudSentences.forEach(s => { text += `- ${s.trim()}.\n`; });
+  text += `\n`;
+
+  t.freud.forEach((r, i) => {
+    text += `SLIDE ${6 + i} — FREUD: "${r.work.toUpperCase()}" (${r.year})\n`;
+    text += `- Volume ${r.volume || 'S/N'} da Edicao Standard\n`;
+    text += `- ${r.detail}\n`;
+    text += `- Citacao-chave a destacar\n\n`;
+  });
+
+  const nextSlide = 6 + t.freud.length;
+
+  text += `SLIDE ${nextSlide} — TRANSICAO: DE FREUD A LACAN\n`;
+  text += `- O que Lacan herda de Freud?\n`;
+  text += `- O que Lacan transforma?\n`;
+  text += `- Contexto: retorno a Freud via estruturalismo\n\n`;
+
+  // Lacan slides
+  text += `SLIDE ${nextSlide + 1} — LACAN: VISAO GERAL\n`;
+  const lacanSentences = (paras[2] || '').split(/\.\s+/).slice(0, 3);
+  lacanSentences.forEach(s => { text += `- ${s.trim()}.\n`; });
+  text += `\n`;
+
+  t.lacan.forEach((r, i) => {
+    text += `SLIDE ${nextSlide + 2 + i} — LACAN: "${r.work.toUpperCase()}" (${r.year})\n`;
+    text += `- ${r.detail}\n`;
+    text += `- Conceito-chave a destacar\n\n`;
+  });
+
+  const clinSlide = nextSlide + 2 + t.lacan.length;
+
+  text += `SLIDE ${clinSlide} — QUADRO COMPARATIVO\n`;
+  text += `- Coluna 1: FREUD | Coluna 2: LACAN\n`;
+  text += `- Concepcao do fenomeno\n`;
+  text += `- Referencial teorico\n`;
+  text += `- Implicacao clinica\n\n`;
+
+  text += `SLIDE ${clinSlide + 1} — ARTICULACOES CLINICAS\n`;
+  text += `- Como esse conceito aparece na clinica?\n`;
+  text += `- Vinheta clinica ilustrativa\n`;
+  text += `- Orientacao para a escuta analitica\n\n`;
+
+  text += `SLIDE ${clinSlide + 2} — QUESTOES PARA DISCUSSAO\n`;
+  text += `- Qual a atualidade desse conceito?\n`;
+  text += `- Como ele se articula com a pratica contemporanea?\n`;
+  text += `- Limites e possibilidades\n\n`;
+
+  text += `SLIDE ${clinSlide + 3} — SINTESE\n`;
+  text += `- 3-4 pontos principais da apresentacao\n`;
+  text += `- Articulacao entre Freud e Lacan\n`;
+  text += `- Importancia para a formacao analitica\n\n`;
+
+  text += `SLIDE ${clinSlide + 4} — REFERENCIAS BIBLIOGRAFICAS\n`;
+  text += `FREUD:\n`;
+  t.freud.forEach(r => { text += `- ${r.work} (${r.year}), vol. ${r.volume || 'S/N'}\n`; });
+  text += `LACAN:\n`;
+  t.lacan.forEach(r => { text += `- ${r.work} (${r.year})\n`; });
+  text += `\n`;
+
+  text += `SLIDE ${clinSlide + 5} — OBRIGADO(A)\n`;
+  text += `- Contato\n`;
+  text += `- Leituras recomendadas\n`;
+  text += `- QR code para material complementar (opcional)\n\n`;
+
+  text += `${'='.repeat(60)}\n`;
+  text += `DICAS DE DESIGN\n`;
+  text += `- Fundo escuro com tipografia serifada (academico)\n`;
+  text += `- Citacoes diretas em destaque (italico, fonte maior)\n`;
+  text += `- Maximo 5-6 topicos por slide\n`;
+  text += `- Imagens: retratos de Freud e Lacan, capas das obras\n\n`;
+  text += `Conteudo gerado por Inteligencia Artificial (IA) — requer revisao do apresentador.`;
+
+  showModal('Esquema para Slides', text);
+}
+
+function showModal(title, content) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalContent').textContent = content;
+  document.getElementById('exportModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('exportModal').classList.remove('active');
+}
+
+function copyModal() {
+  const text = document.getElementById('modalContent').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Copiado para a area de transferencia!');
+  }).catch(() => {
+    const range = document.createRange();
+    range.selectNode(document.getElementById('modalContent'));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    showToast('Copiado!');
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+</script>
+</body>
+</html>
