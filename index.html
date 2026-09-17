@@ -143,52 +143,115 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
   margin: 0 auto;
   padding: 0 24px 24px;
 }
-.api-toggle {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 0;
-}
-.api-toggle:hover { color: var(--accent); }
-.api-config {
-  display: none;
+.api-section {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 14px;
-  margin-top: 8px;
+  padding: 20px;
+  transition: border-color 0.3s;
 }
-.api-config.open { display: block; }
-.api-config label {
+.api-section.validated { border-color: var(--sage); }
+.api-section-title {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.api-section-sub {
   font-family: var(--font-ui);
   font-size: 12px;
   color: var(--text-muted);
-  display: block;
-  margin-bottom: 6px;
+  margin-bottom: 14px;
 }
-.api-config input {
-  width: 100%;
-  padding: 8px 12px;
+.api-key-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.api-key-row input {
+  flex: 1;
+  padding: 10px 14px;
   background: var(--surface2);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   color: var(--text);
   font-family: var(--font-ui);
   font-size: 13px;
   outline: none;
+  transition: border-color 0.3s;
 }
-.api-config input:focus { border-color: var(--accent); }
-.api-config .hint {
+.api-key-row input:focus { border-color: var(--accent); }
+.api-key-row input.key-valid { border-color: var(--sage); }
+.api-key-row input.key-invalid { border-color: var(--rose); }
+.btn-validate {
+  font-family: var(--font-ui);
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  background: var(--accent);
+  color: #1a1118;
+}
+.btn-validate:hover { background: var(--accent-hover); }
+.btn-validate:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-validate.validating { background: var(--surface3); color: var(--text-muted); }
+.api-status {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: none;
+}
+.api-status.show { display: flex; align-items: center; gap: 8px; }
+.api-status.success { background: rgba(126,168,126,0.15); color: var(--sage); }
+.api-status.error { background: rgba(196,122,138,0.15); color: var(--rose); }
+.api-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.btn-get-key {
+  font-family: var(--font-ui);
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--wine-dim);
+  color: var(--rose);
+  border: 1px solid rgba(139,69,114,0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-get-key:hover { background: rgba(139,69,114,0.3); }
+.api-note {
+  font-family: var(--font-ui);
   font-size: 11px;
   color: var(--text-muted);
-  margin-top: 6px;
-  line-height: 1.5;
 }
-.api-config .hint a { color: var(--accent); text-decoration: none; }
+.search-status {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  text-align: center;
+  margin-top: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  display: none;
+}
+.search-status.show { display: block; }
+.search-status.unlocked { background: rgba(126,168,126,0.1); color: var(--sage); }
+.search-status.locked { background: rgba(201,168,76,0.1); color: var(--accent); }
 
 .result-area {
   max-width: 900px;
@@ -442,20 +505,25 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
         onkeydown="if(event.key==='Enter') search()">
     </div>
     <div class="search-hint">Pressione Enter para pesquisar &mdash; ex: Inconsciente, Complexo de Edipo, Estadio do Espelho, Pulsao de morte</div>
+    <div class="search-status" id="searchStatus"></div>
   </div>
 
   <div class="topics-grid" id="topicsGrid"></div>
 
   <div class="api-bar">
-    <div class="api-toggle" onclick="toggleApiConfig()">&#9881; Configurar Gemini API (para temas personalizados)</div>
-    <div class="api-config" id="apiConfig">
-      <label>Chave da API Google Gemini (gratuita)</label>
-      <input type="password" id="apiKey" placeholder="Cole sua chave aqui..."
-        onchange="localStorage.setItem('gemini_key', this.value)">
-      <div class="hint">
-        Obtenha sua chave gratuita em <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a>.<br>
-        Sem chave, apenas os temas pre-cadastrados estao disponiveis.
-        A chave fica salva apenas no seu navegador.
+    <div class="api-section" id="apiSection">
+      <div class="api-section-title">Pesquisa com Inteligencia Artificial</div>
+      <div class="api-section-sub">Para pesquisar qualquer tema alem dos pre-cadastrados, conecte sua chave Gemini (gratuita)</div>
+      <div class="api-key-row">
+        <input type="password" id="apiKey" placeholder="Cole sua chave da API Gemini aqui..."
+          onkeydown="if(event.key==='Enter') validateKey()"
+          oninput="onKeyInput()">
+        <button class="btn-validate" id="btnValidate" onclick="validateKey()">Validar</button>
+      </div>
+      <div class="api-status" id="apiStatus"></div>
+      <div class="api-actions">
+        <a href="https://aistudio.google.com/apikey" target="_blank" class="btn-get-key">&#128273; Obter chave gratuita no Google AI Studio</a>
+        <span class="api-note">A chave fica salva apenas no seu navegador</span>
       </div>
     </div>
   </div>
@@ -798,11 +866,82 @@ window.addEventListener('DOMContentLoaded', () => {
   ).join('');
 
   const savedKey = localStorage.getItem('gemini_key');
-  if (savedKey) document.getElementById('apiKey').value = savedKey;
+  if (savedKey) {
+    document.getElementById('apiKey').value = savedKey;
+    validateKey(true);
+  } else {
+    updateSearchStatus(false);
+  }
 });
 
-function toggleApiConfig() {
-  document.getElementById('apiConfig').classList.toggle('open');
+function onKeyInput() {
+  const input = document.getElementById('apiKey');
+  input.classList.remove('key-valid', 'key-invalid');
+  document.getElementById('apiStatus').classList.remove('show');
+  document.getElementById('btnValidate').textContent = 'Validar';
+}
+
+function updateSearchStatus(valid) {
+  const el = document.getElementById('searchStatus');
+  if (valid) {
+    el.textContent = '✓ Pesquisa personalizada ativa — digite qualquer tema psicanalitico';
+    el.className = 'search-status show unlocked';
+  } else {
+    el.textContent = '⚠ Apenas temas pre-cadastrados — conecte sua chave Gemini abaixo para pesquisa livre';
+    el.className = 'search-status show locked';
+  }
+}
+
+async function validateKey(silent) {
+  const input = document.getElementById('apiKey');
+  const key = input.value.trim();
+  if (!key) return;
+
+  const btn = document.getElementById('btnValidate');
+  const status = document.getElementById('apiStatus');
+  const section = document.getElementById('apiSection');
+
+  btn.textContent = 'Validando...';
+  btn.disabled = true;
+  btn.classList.add('validating');
+
+  try {
+    const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
+    if (!resp.ok) throw new Error('Chave invalida');
+    const data = await resp.json();
+    const hasModels = (data.models || []).some(m =>
+      m.supportedGenerationMethods?.includes('generateContent')
+    );
+    if (!hasModels) throw new Error('Sem modelos disponiveis');
+
+    localStorage.setItem('gemini_key', key);
+    input.classList.remove('key-invalid');
+    input.classList.add('key-valid');
+    section.classList.add('validated');
+    btn.textContent = '✓ Validada';
+    btn.classList.remove('validating');
+    btn.disabled = false;
+
+    if (!silent) {
+      status.innerHTML = '✅ Chave validada com sucesso! Pesquisa personalizada liberada.';
+      status.className = 'api-status show success';
+    }
+    updateSearchStatus(true);
+  } catch (e) {
+    input.classList.remove('key-valid');
+    input.classList.add('key-invalid');
+    section.classList.remove('validated');
+    btn.textContent = 'Validar';
+    btn.classList.remove('validating');
+    btn.disabled = false;
+    localStorage.removeItem('gemini_key');
+
+    if (!silent) {
+      status.innerHTML = '❌ ' + (e.message || 'Erro ao validar chave');
+      status.className = 'api-status show error';
+    }
+    updateSearchStatus(false);
+  }
 }
 
 function search() {
